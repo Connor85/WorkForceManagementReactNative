@@ -39,7 +39,6 @@ class LoginForm extends Component {
   render() {
     return (
       <View>
-        <Header headerText="Please Login" />
         <Card>
           <CardSection>
             <Input

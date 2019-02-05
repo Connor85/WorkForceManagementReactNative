@@ -1,32 +1,24 @@
 import React from "react";
-import { View } from "react-native";
 import { Scene, Router } from "react-native-router-flux";
 import LoginForm from "./components/LoginForm";
 import EmployeeList from "./components/EmployeeList";
 
 const RouterComponent = () => {
   return (
-    <View
-      style={{
-        position: "absolute",
-        left: 0,
-        right: 0,
-        top: 0,
-        bottom: 0,
-        backgroundColor: "#F5FCFF"
-      }}
-    >
-      <Router>
-        <Scene key="root">
-          <Scene key="login" component={LoginForm} hideNavBar={true} initial />
+    <Router sceneStyle={{ paddingTop: 65 }}>
+      <Scene key="root" hideNavBar>
+        <Scene key="auth">
+          <Scene key="login" component={LoginForm} title="Please Login" />
+        </Scene>
+        <Scene key="main">
           <Scene
             key="employeeList"
             component={EmployeeList}
-            hideNavBar={true}
+            title="Employees"
           />
         </Scene>
-      </Router>
-    </View>
+      </Scene>
+    </Router>
   );
 };
 
