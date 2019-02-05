@@ -2,6 +2,7 @@ import React from "react";
 import { View } from "react-native";
 import { Scene, Router } from "react-native-router-flux";
 import LoginForm from "./components/LoginForm";
+import EmployeeList from "./components/EmployeeList";
 
 const RouterComponent = () => {
   return (
@@ -16,7 +17,14 @@ const RouterComponent = () => {
       }}
     >
       <Router>
-        <Scene key="login" component={LoginForm} hideNavBar={true} />
+        <Scene key="root">
+          <Scene key="login" component={LoginForm} hideNavBar={true} initial />
+          <Scene
+            key="employeeList"
+            component={EmployeeList}
+            hideNavBar={true}
+          />
+        </Scene>
       </Router>
     </View>
   );
