@@ -28,8 +28,8 @@ class EmployeeCreate extends Component {
             label="Phone"
             placeholder="555-555-5555"
             value={this.props.phone}
-            onChangeText={text =>
-              this.props.employeeUpdate({ prop: "phone", value: text })
+            onChangeText={value =>
+              this.props.employeeUpdate({ prop: "phone", value })
             }
           />
         </CardSection>
@@ -52,7 +52,7 @@ class EmployeeCreate extends Component {
           </Picker>
         </CardSection>
         <CardSection>
-          <Button onPress={this.onButtonPress().bind(this)}>Add</Button>
+          <Button onPress={this.onButtonPress.bind(this)}>Add</Button>
         </CardSection>
       </Card>
     );
