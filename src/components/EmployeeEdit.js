@@ -3,10 +3,12 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import Communications from "react-native-communications";
 import EmployeeForm from "./EmployeeForm";
-import { employeeUpdate, employeeSave } from "../actions";
+import { employeeUpdate, employeeSave, employeeDelete } from "../actions";
 import { Card, CardSection, Button, Confirm } from "./common";
 
 class EmployeeEdit extends Component {
+  state = { showModal: false };
+
   componentWillMount() {
     _.each(this.props.employee, (value, prop) => {
       this.props.employeeUpdate({ prop, value });
@@ -15,6 +17,7 @@ class EmployeeEdit extends Component {
 
   onButtonPress() {
     const { name, phone, shift } = this.props;
+
     this.props.employeeSave({
       name,
       phone,
@@ -29,6 +32,16 @@ class EmployeeEdit extends Component {
     Communications.text(phone, `Your upcoming shift is on ${shift}`);
   }
 
+  onAccept() {
+    const { uid } = this.props.employee;
+
+    this.props.employeeDelete({ uid });
+  }
+
+  onDecline() {
+    return this.setState({ showModal: false });
+  }
+
   render() {
     return (
       <Card>
@@ -37,15 +50,32 @@ class EmployeeEdit extends Component {
         <CardSection>
           <Button onPress={this.onButtonPress.bind(this)}>Save Changes</Button>
         </CardSection>
+
         <CardSection>
-          <Button>Text Schedule</Button>
+          <Button onPress={this.onTextPress.bind(this)}>Text Schedule</Button>
         </CardSection>
+
+        <CardSection>
+          <Button
+            onPress={() => this.setState({ showModal: !this.state.showModal })}
+          >
+            Fire Employee
+          </Button>
+        </CardSection>
+
+        <Confirm
+          onAccept={this.onAccept.bind(this)}
+          onDecline={this.onDecline.bind(this)}
+          visible={this.state.showModal}
+        >
+          Are you sure you want to delete this?
+        </Confirm>
       </Card>
     );
   }
 }
 
-mapStateToProps = state => {
+const mapStateToProps = state => {
   const { name, phone, shift } = state.employeeForm;
 
   return { name, phone, shift };
@@ -53,5 +83,9 @@ mapStateToProps = state => {
 
 export default connect(
   mapStateToProps,
-  { employeeUpdate, employeeSave }
+  {
+    employeeUpdate,
+    employeeSave,
+    employeeDelete
+  }
 )(EmployeeEdit);
